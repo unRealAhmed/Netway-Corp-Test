@@ -76,30 +76,6 @@ Optimization:
 
 How would you optimize the queries for high traffic scenarios (e.g., indexing, caching)?
 
-## Challenge 3: Microservices Design
-
-### Objective
-Design a microservices architecture for the Order Processing System of an e-commerce platform.
-
-### Requirements
-
-#### Services:
-- **Order Service**: Manages customer orders.
-- **Payment Service**: Handles payment processing.
-- **Inventory Service**: Tracks product availability.
-
-#### Communication:
-- Design a communication mechanism between these services using **REST APIs** or a **message broker** (e.g., RabbitMQ, Kafka).
-- Describe how to handle failures and ensure **eventual consistency** between services.
-
----
-
-## Evaluation Criteria:
-- Correct implementation of **JWT Authentication** and **Authorization Middleware**.
-- Clean and efficient implementation of **API endpoints** and **queries**.
-- Proper use of **Express Validator** for input validation.
-- Well-designed and optimized **database queries**.
-- Clear explanation of **microservices communication** and **fault tolerance** strategies.
 
 ---
 
