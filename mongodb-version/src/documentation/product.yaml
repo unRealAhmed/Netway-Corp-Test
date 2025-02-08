@@ -1,0 +1,217 @@
+openapi: 3.0.0
+info:
+    title: Product API
+    description: API for managing products
+    version: 1.0.0
+    contact:
+        name: NetWay Corp Mongodb Version
+        email: ahmed.sayed.connect@gmail.com
+
+tags:
+    - name: Products
+      description: Endpoints related to product management
+
+paths:
+    /api/products:
+        post:
+            tags:
+                - Products
+            summary: Create a new product
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProductRequest'
+            responses:
+                201:
+                    description: Product successfully created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProductResponse'
+                400:
+                    description: Bad Request - Invalid input
+
+        get:
+            tags:
+                - Products
+            summary: Retrieve all products with filtering, sorting, and pagination
+            parameters:
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                      example: 1
+                  description: Page number for pagination
+
+                - in: query
+                  name: limit
+                  schema:
+                      type: integer
+                      example: 10
+                  description: Number of items per page
+
+                - in: query
+                  name: sortBy
+                  schema:
+                      type: string
+                      example: 'price'
+                  description: Field to sort by
+
+                - in: query
+                  name: order
+                  schema:
+                      type: string
+                      enum: [ASC, DESC]
+                      example: 'ASC'
+                  description: Sorting order (ascending or descending)
+
+                - in: query
+                  name: priceMin
+                  schema:
+                      type: number
+                      example: 50
+                  description: Minimum price (greater than or equal to this value)
+
+                - in: query
+                  name: priceMax
+                  schema:
+                      type: number
+                      example: 200
+                  description: Maximum price (less than or equal to this value)
+
+            responses:
+                200:
+                    description: List of products matching the criteria
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ProductResponse'
+    /api/products/{id}:
+        get:
+            tags:
+                - Products
+            summary: Get a product by ID
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Product found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProductResponse'
+                404:
+                    description: Product not found
+
+        patch:
+            tags:
+                - Products
+            summary: Update a product
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProductRequest'
+            responses:
+                200:
+                    description: Product updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProductResponse'
+                400:
+                    description: Bad Request - Invalid input
+                404:
+                    description: Product not found
+
+        delete:
+            tags:
+                - Products
+            summary: Delete a product
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Product deleted successfully
+                404:
+                    description: Product not found
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+
+    schemas:
+        ProductRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    example: 'Headphones'
+                category:
+                    type: string
+                    example: 'Electronics'
+                price:
+                    type: number
+                    format: float
+                    example: 99.99
+                quantity:
+                    type: integer
+                    example: 50
+            required:
+                - name
+                - price
+                - quantity
+
+        ProductResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: '3b12f1df94b294b507dd6cc9'
+                name:
+                    type: string
+                    example: 'Headphones'
+                category:
+                    type: string
+                    example: 'Electronics'
+                price:
+                    type: number
+                    format: float
+                    example: 99.99
+                quantity:
+                    type: integer
+                    example: 50
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
